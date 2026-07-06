@@ -1,0 +1,52 @@
+abstract class AutoPayAccount {
+    protected String mobileNumber;
+    protected double walletBalance;
+
+    public AutoPayAccount(String mobileNumber, double initialBalance) {
+        this.mobileNumber = mobileNumber;
+        this.walletBalance = initialBalance;
+    }
+
+    public void displayBalance() {
+        System.out.println("Mobile: " + mobileNumber +
+                " | Wallet Balance: ₹" + walletBalance);
+    }
+
+    public abstract void addMoney(double amount);
+    public abstract void setAutoPay(double billAmount);
+}
+
+class PhonePeAccount extends AutoPayAccount {
+
+    public PhonePeAccount(String mobileNumber, double initialBalance) {
+        super(mobileNumber, initialBalance);
+    }
+
+    @Override
+    public void addMoney(double amount) {
+        walletBalance += amount;
+        System.out.println("₹" + amount + " added to PhonePe Wallet.");
+    }
+
+    @Override
+    public void setAutoPay(double billAmount) {
+        if (walletBalance >= billAmount) {
+            walletBalance -= billAmount;
+            System.out.println("AutoPay Successful! Bill of ₹" + billAmount + " paid.");
+        } else {
+            System.out.println("AutoPay Failed: Insufficient balance.");
+        }
+    }
+}
+
+public class Main {      // <-- This must match the filename if using an online compiler
+    public static void main(String[] args) {
+
+        AutoPayAccount user = new PhonePeAccount("9876543210", 1500);
+
+        user.displayBalance();
+        user.addMoney(500);
+        user.setAutoPay(1200);
+        user.displayBalance();
+    }
+}
